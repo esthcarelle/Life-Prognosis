@@ -3,8 +3,6 @@ import models.Patient;
 import models.RegistrationManager;
 import models.UserRole;
 
-import java.io.File;
-import java.util.Date;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -22,7 +20,8 @@ public class Main {
             System.out.println("1. Login");
             System.out.println("2. Admin: Initiate Patient Registration");
             System.out.println("3. Patient: Complete Registration");
-            System.out.println("4. Exit");
+            System.out.println("4. Admin: Download CSV files");
+            System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine();  // consume newline
@@ -98,8 +97,12 @@ public class Main {
                     }
                     break;
                 case 4:
+                    admin.downloadFiles();
+                    break;
+                case 5:
                     scanner.close();
                     System.exit(0);
+
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }

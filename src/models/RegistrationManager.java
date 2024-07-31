@@ -1,17 +1,16 @@
 package models;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 
 public class RegistrationManager {
-    private static final String USER_STORE = "user-store.txt";
+    private static final String USER_STORE = "storage/user-store.txt";
     static String hashedPassword = "";
 
     public void completeRegistration(String email, String pass, String uuid, String firstName, String lastName, String dateOfBirth, String countryISOCode, boolean isHIVPositive, String diagnosisDate, boolean onART, String artStartDate, String role, double lifespan) {
 
         // We first hash the password
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("./hash-password.sh", pass);
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/hash-password.sh", pass);
             Process process = processBuilder.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -37,7 +36,7 @@ public class RegistrationManager {
         // We call the script and pass the variables
         /// lifespan
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("./complete-registration.sh", email, hashedPassword, uuid,firstName,lastName, dateOfBirth,countryISOCode, String.valueOf(isHIVPositive),diagnosisDate,String.valueOf(onART),artStartDate,role, Double.toString(lifespan));
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/complete-registration.sh", email, hashedPassword, uuid,firstName,lastName, dateOfBirth,countryISOCode, String.valueOf(isHIVPositive),diagnosisDate,String.valueOf(onART),artStartDate,role, Double.toString(lifespan));
             Process process = processBuilder.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -64,7 +63,7 @@ public class RegistrationManager {
     public void userLogin(String email, String password){
         // We first hash the password
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("./hash-password.sh", password);
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/hash-password.sh", password);
             Process process = processBuilder.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -88,7 +87,7 @@ public class RegistrationManager {
         }
 
         try{
-            ProcessBuilder processBuilder = new ProcessBuilder("./login.sh", email, hashedPassword);
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/login.sh", email, hashedPassword);
             Process process = processBuilder.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
