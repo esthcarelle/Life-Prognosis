@@ -11,7 +11,7 @@ generate_uuid() {
 initiate_registration() {
     local email=$1
     local uuid=$(generate_uuid)
-    echo "$email:$uuid:ADMIN:" >> $USER_STORE
+    echo "$email,,$uuid,,,,,,,,,\"patient\"," >> $USER_STORE
     echo "Registration initiated for $email. Use UUID: $uuid to complete registration."
 }
 
