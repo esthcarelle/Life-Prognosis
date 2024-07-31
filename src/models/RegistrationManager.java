@@ -25,7 +25,7 @@ public class RegistrationManager {
 
             int exitCode = process.exitValue();
             if (exitCode == 0) {
-                System.out.println("Hashed Password: " + hashedPassword);
+                System.out.println("Hashing successful");
             } else {
                 System.out.println("An error occurred during hashing.");
             }
@@ -58,6 +58,48 @@ public class RegistrationManager {
         }
         catch(Exception ex){
             System.out.println(ex.getMessage());
+        }
+    }
+
+    public void userLogin(String email, String password){
+        // We first hash the password
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("./hash-password.sh", password);
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                hashedPassword = line;
+            }
+
+            process.waitFor();
+
+            int exitCode = process.exitValue();
+            if (exitCode == 0) {
+                System.out.println("Hashing successful");
+            } else {
+                System.out.println("An error occurred during hashing.");
+            }
+        }
+        catch(Exception ex){
+            System.out.print(ex.getMessage());
+        }
+
+        try{
+            ProcessBuilder processBuilder = new ProcessBuilder("./login.sh", email, hashedPassword);
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String script_output;
+
+            while ((script_output = reader.readLine()) != null) {
+                System.out.println(script_output);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
         }
     }
 }
