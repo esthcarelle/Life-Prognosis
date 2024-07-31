@@ -1,0 +1,2 @@
+admin@lpmt.com,,f0c7909e-8052-4366-96b8-374fab3816c8,,,,,,,,,admin,
+patient1@testmail.com,f07245df80ee034f9519eed5d761e5979380e417366cf1119c10328c6dfe9016,cf0889d1-5f46-4165-b424-3b4491d10fe0,Test,Patient1,22-04-1963,UGA,false,,false,,PATIENT,67.9
