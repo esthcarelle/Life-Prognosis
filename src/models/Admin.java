@@ -30,7 +30,7 @@ public class Admin extends User {
         // Write to user-store.txt
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("./user-manager.sh", email);
+            ProcessBuilder processBuilder = new ProcessBuilder("./user-manager.sh", "initiate_registration", email);
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
