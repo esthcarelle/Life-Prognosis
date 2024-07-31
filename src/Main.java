@@ -29,7 +29,11 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Coming soon");
+                    System.out.print("Enter Your Email: ");
+                    String loginEmail = scanner.nextLine();
+                    System.out.print("Enter Your Password: ");
+                    String loginPassword = scanner.nextLine();
+                    regMgr.userLogin(loginEmail,loginPassword);
                     break;
                 case 2:
                     System.out.print("Enter Patient Email: ");
