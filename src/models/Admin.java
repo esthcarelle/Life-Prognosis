@@ -28,16 +28,23 @@ public class Admin extends User {
         // Generate UUID for patient
         String uuid = java.util.UUID.randomUUID().toString();
         // Write to user-store.txt
-        ProcessBuilder processBuilder = new ProcessBuilder("./user-manager.sh", "initiateRegistration", email);
-        processBuilder.directory(new File("/Users/esthercarrelle/IdeaProjects/Life Prognosis/src"));
 
-        String command = String.format("./user-manager.sh initiate-registration %s %s", email, uuid);
         try {
+            ProcessBuilder processBuilder = new ProcessBuilder("./user-manager.sh", email);
             Process process = processBuilder.start();
-            // Capture the process output
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            process.waitFor();
+            int exitCode = process.exitValue();
+            if (exitCode == 0) {
+                System.out.println("Hashed Password: " + line);
+            } else {
+                System.out.println("An error occurred during hashing.");
+            }
+           while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
             process.waitFor();
