@@ -1,7 +1,7 @@
 /*
  * File: Admin.java
  * ------------------------------
- * Owner: Bisoke
+ * Owner: Bisoke Group 4
  * © 2024 CMU. All rights reserved.
  */
 
@@ -73,7 +73,7 @@ public class Admin extends User {
             process.waitFor();
             int exitCode = process.exitValue();
             if (exitCode == 0) {
-                System.out.println("Hashed Password: " + null);
+                System.out.println("Success");
             } else {
                 System.out.println("An error occurred during hashing.");
             }
