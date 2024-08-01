@@ -1,9 +1,7 @@
 package models;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
-import java.util.Date;
 
 public class Admin extends User {
     public Admin(String firstName, String lastName, String email, String passwordHash) {
@@ -30,7 +28,7 @@ public class Admin extends User {
         // Write to user-store.txt
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("./user-manager.sh", "initiate_registration", email);
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/user-manager.sh", "initiate_registration", email);
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
@@ -45,6 +43,29 @@ public class Admin extends User {
                 System.out.println("An error occurred during hashing.");
             }
            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            process.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void downloadFiles() {
+        // Generate UUID for patient
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/download-csv.sh", "createCSV");
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            process.waitFor();
+            int exitCode = process.exitValue();
+
+            while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
             process.waitFor();
