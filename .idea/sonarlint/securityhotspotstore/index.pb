@@ -9,12 +9,6 @@ E
 src/models/Admin.java,0/e/0e4290fa38809e6f43873a35d131e76ec0d9e530
 G
 src/models/Patient.java,e/c/ecbd05c9a8df4a33791ebe6d9f6922f97708e6b6
-J
-src/models/user-manager.sh,e/2/e23d16ac57031b01c9a1c88f6ccacfefb9597799
-C
-src/user-manager.sh,8/5/855e992c43ea330ea98e90614ab57f73dcb16d28
-B
-src/user-store.txt,d/b/dbe392156000ffbb29af8949b25a0c4d407effa0
 ]
 -.idea/sonarlint/securityhotspotstore/index.pb,8/8/88a9255124c95bdc913197c120a8d560edc59c8e
 S
@@ -22,12 +16,6 @@ S
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
-L
-src/complete-registration.sh,b/5/b5d0240ee2d3eab20b50567e19aa743cc8805945
-D
-src/hash-password.sh,f/1/f158ad6c75fe28b2f559aaad9706ae9acb3bced7
-C
-src/download-csc.sh,7/2/7213ba1d091efcba84bf89312492a65cdf62f9d8
 L
 src/scripts/hash-password.sh,b/e/beb705cd4f8f1d1c20c06abbd15f03b2be67e764
 S
