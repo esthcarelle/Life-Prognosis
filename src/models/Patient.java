@@ -1,7 +1,7 @@
 /*
  * File: Patient.java
  * ------------------------------
- * Owner: Bisoke
+ * Owner: Bisoke Group 4
  * © 2024 CMU. All rights reserved.
  */
 

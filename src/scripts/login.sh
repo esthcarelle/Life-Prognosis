@@ -16,6 +16,6 @@ if [ -z "$user_data" ]; then
 elif [ "$input_password" != "$password" ]; then
 	echo "Invalid Password."
 else
-	echo "All is set. We are taking you to your dashboard..."
+	echo "Welcome, you will be viewing your dashboard shortly your dashboard..."
 fi
 fi

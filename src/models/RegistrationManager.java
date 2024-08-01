@@ -1,7 +1,7 @@
 /*
  * File: RegistrationManager.java
  * ------------------------------
- * Owner: Bisoke
+ * Owner: Bisoke Group 4
  * © 2024 CMU. All rights reserved.
  */
 
@@ -47,9 +47,9 @@ public class RegistrationManager {
             process.waitFor();
             int exitCode = process.exitValue();
             if (exitCode == 0) {
-                System.out.println("Hashing successful");
+                System.out.println("Loading...");
             } else {
-                System.out.println("An error occurred during hashing.");
+                System.out.println("Unable to complete registration at the moment. Please try again later or contact the system administrator.");
             }
         } catch (Exception ex) {
             System.out.print(ex.getMessage());
@@ -69,7 +69,7 @@ public class RegistrationManager {
             if (exitCode == 0) {
                 System.out.println("The complete registration script was executed successfully");
             } else {
-                System.out.println("An error occurred while writing to the file.");
+                System.out.println("An error occurred while saving your details. Please try again later.");
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -95,9 +95,9 @@ public class RegistrationManager {
             process.waitFor();
             int exitCode = process.exitValue();
             if (exitCode == 0) {
-                System.out.println("Hashing successful");
+                System.out.println("Loading...");
             } else {
-                System.out.println("An error occurred during hashing.");
+                System.out.println("Unable to complete registration at the moment. Please try again later or contact the system administrator.");
             }
         } catch (Exception ex) {
             System.out.print(ex.getMessage());
