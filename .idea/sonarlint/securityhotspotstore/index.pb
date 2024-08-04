@@ -30,3 +30,5 @@ D
 src/scripts/login.sh,2/b/2b4c273c806b19f6556437205eaeb9d12ad9f2da
 K
 src/scripts/download-csv.sh,3/b/3bc96c1da593753b21eea3b4332deebbe4312b0c
+9
+	users.csv,a/c/acf9e7ffd0e7fdc6d0a5bba07664433b363811c4
