@@ -8,10 +8,7 @@
 package models;
 
 import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map;
 
 /**
  * The Admin class extends the User class, representing an administrator in the system.
@@ -101,31 +98,6 @@ public class Admin extends User {
             process.waitFor();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
-    }
-    public void downloadUserData(User requestingUser, String filePath, Map<String,User> users) {
-        if (!(requestingUser instanceof Admin)) {
-            throw new SecurityException("Access denied. Only admins can download user data.");
-        }
-
-        try (FileWriter writer = new FileWriter("users.csv")) {
-            writer.append("First Name,Last Name,Email,Date of Birth,Has HIV,Diagnosis Date,On ART Drugs,ART Start Date,Country of Residence\n");
-            for (User user : users.values()) {
-                if (user instanceof Patient patient) {
-                    writer.append(patient.getFirstName()).append(",")
-                            .append(patient.getLastName()).append(",")
-                            .append(patient.getEmail()).append(",")
-                            .append(patient.getEmail()).append(",")
-                            .append(patient.getDateOfBirth().toString()).append(",")
-                            .append(patient.isHIVPositive()+"").append(",")
-                            .append(patient.getDiagnosisDate().toString()).append(",")
-                            .append(patient.isOnART()+"").append(",")
-                            .append(patient.getCountryISOCode()).append(",").append("\n");
-                }
-            }
-            System.out.println("Users File Successfully downloaded!");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
