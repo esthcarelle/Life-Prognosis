@@ -181,8 +181,8 @@ public class RegistrationManager {
             while ((script_output = reader.readLine()) != null) {
                 String[] outputs = script_output.split(",");
 
-                loggedInEmail = outputs.length > 0 ? outputs[0].trim() : "";
-                loggedInRole = outputs.length > 1 ? outputs[1].trim() : "";
+                loggedInEmail = outputs.length > 0 ? outputs[0].trim() : null;
+                loggedInRole = outputs.length > 1 ? outputs[1].trim() : null;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -192,7 +192,7 @@ public class RegistrationManager {
     /**
      * Logs out a user by clearing the email and role variables
      */
-    public static void logout(){
+    public void logout(){
         loggedInRole = null;
         loggedInEmail = null;
     }
