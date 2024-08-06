@@ -1,5 +1,6 @@
 patient2@testmail.com,ab9a61a5dd423b97aed3dd6f0aa9ad257325b9b7b44102e804ad431d0f2aeb4a,226ca8ac-fdbe-489a-b4a6-bd4c12a36ae5,Test,Patient2,14-05-1977,RWA,false,,false,,PATIENT,68.0
 patient3@mail.com,9e38b40c2ae5a32126bd69bb2ff9f1c2cbbdbb5f08870fd4b5642aee7fa5ea27,b4083ce0-8021-4579-908e-8902e94ef30a,hh,ll,12-02-1998,UGA,false,,false,,PATIENT,60.2
 test@mail.com,868cf41bb855b0d639f3607f1a10058185409812b62b28745443a2b29d1aef54,6e07e339-8511-4dfe-b2c6-d986105e78ee,tt,yy,21-02-1995,UGA,false,,false,,PATIENT,0.0
-thomas@mugagga,,d517ea3f-c714-4ba3-a3da-eb3effd1a3cf,,,,,,,,,"patient",
-patient4@testmail.com,,b3ea31a4-9289-4ccd-97f6-c8e12ecd1c84,,,,,,,,,"patient",
+thomas@mugagga.com,f07245df80ee034f9519eed5d761e5979380e417366cf1119c10328c6dfe9016,d517ea3f-c714-4ba3-a3da-eb3effd1a3cf,Thomas,Mugagga,22-03-1994,ETH,false,,false,,PATIENT,35.0
+admin@testmail.com,f07245df80ee034f9519eed5d761e5979380e417366cf1119c10328c6dfe9016,b3ea31a4-9289-4ccd-97f6-c8e12ecd1c84,,,,,,,,,"ADMIN",
+patient5@testmail.com,,6d16ba35-b8a1-4bdc-a97e-6ddea3e7c4d1,,,,,,,,,"patient",
