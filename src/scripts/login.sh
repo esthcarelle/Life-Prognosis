@@ -18,19 +18,6 @@ if [ -z "$user_data" ]; then
 elif [ "$input_password" != "$password" ]; then
 	echo "Invalid Password."
 else
-	FILE="LoggedIn_Users_Session_File.txt"
-	VALUES="$input_email,$Role,LoggedIn"
-
-	# Check if the file exists
-	if [ ! -e "$FILE" ]; then
-  		# Create the file
-  		touch "$FILE"
-		#Append needed values to created file
-		echo "$VALUES" >> "$FILE"
-	else
-		echo "$VALUES" >> "$FILE"
-	fi
-
-	echo "Welcome, you will be viewing your dashboard shortly..."
+	echo "$email, $Role"
 fi
 fi
