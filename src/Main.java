@@ -140,7 +140,7 @@ public class Main {
 
                 switch (choice) {
                     case 1:
-                        System.out.println("View Profile");
+                        patient.viewProfile();
                         break;
                     case 2:
                         System.out.println("Update Profile");
