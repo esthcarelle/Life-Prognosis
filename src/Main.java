@@ -1,10 +1,7 @@
 import models.*;
 
 import java.io.Console;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 import static models.RegistrationManager.loggedInEmail;
 import static models.RegistrationManager.loggedInRole;
@@ -16,7 +13,8 @@ public class Main {
     public static void main(String[] args) {
 // Initialize the initial admin
         Admin admin = new Admin("AdminFirstName", "AdminLastName", "admin@example.com", "adminPassHash");
-        Patient patient = new Patient("", "", "", "", null, false, null, false, null, "");
+        Patient patient = new Patient("Isabelle", "Laurent", "isabelle@gmail.com", "dcdsfcew23", new Date(), true, new Date(), false, new Date(), "23");
+
         RegistrationManager regMgr = new RegistrationManager();
         InputValidator val = new InputValidator();
 
@@ -178,6 +176,12 @@ public class Main {
                         break;
                     case 2:
                         admin.downloadFiles();
+
+                        Map<String, User> users = new HashMap<>();
+                        users.put("key", patient);
+
+                        admin.downloadUserData(admin, "users.csv", users);
+
                         break;
                     case 3:
                         regMgr.logout();

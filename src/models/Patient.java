@@ -94,4 +94,52 @@ public class Patient extends User {
     public void updateProfile() {
         // Patient-specific profile update
     }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public boolean isHIVPositive() {
+        return isHIVPositive;
+    }
+
+    public void setHIVPositive(boolean HIVPositive) {
+        isHIVPositive = HIVPositive;
+    }
+
+    public Date getDiagnosisDate() {
+        return diagnosisDate;
+    }
+
+    public void setDiagnosisDate(Date diagnosisDate) {
+        this.diagnosisDate = diagnosisDate;
+    }
+
+    public boolean isOnART() {
+        return onART;
+    }
+
+    public void setOnART(boolean onART) {
+        this.onART = onART;
+    }
+
+    public Date getArtStartDate() {
+        return artStartDate;
+    }
+
+    public void setArtStartDate(Date artStartDate) {
+        this.artStartDate = artStartDate;
+    }
+
+    public String getCountryISOCode() {
+        return countryISOCode;
+    }
+
+    public void setCountryISOCode(String countryISOCode) {
+        this.countryISOCode = countryISOCode;
+    }
 }
