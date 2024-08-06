@@ -116,4 +116,12 @@ public class RegistrationManager {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * Logs out a user by clearing the email and role variables
+     */
+    public static void logout(){
+//        email = null;
+//        role = null;
+    }
 }

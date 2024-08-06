@@ -3,4 +3,3 @@ patient3@mail.com,9e38b40c2ae5a32126bd69bb2ff9f1c2cbbdbb5f08870fd4b5642aee7fa5ea
 test@mail.com,868cf41bb855b0d639f3607f1a10058185409812b62b28745443a2b29d1aef54,6e07e339-8511-4dfe-b2c6-d986105e78ee,tt,yy,21-02-1995,UGA,false,,false,,PATIENT,0.0
 thomas@mugagga,,d517ea3f-c714-4ba3-a3da-eb3effd1a3cf,,,,,,,,,"patient",
 patient4@testmail.com,,b3ea31a4-9289-4ccd-97f6-c8e12ecd1c84,,,,,,,,,"patient",
-patient4@testmail.com,,dbc0bbb2-8c5f-42f3-a28e-fe6ef3e71775,,,,,,,,,"patient",
