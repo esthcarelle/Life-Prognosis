@@ -8,6 +8,8 @@
 package models;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The RegistrationManager class handles the registration and login processes for users.
@@ -15,7 +17,9 @@ import java.io.*;
  */
 public class RegistrationManager {
     static String hashedPassword = "";
-    static String LoggedInUserData="";
+    // login variables
+    public static String loggedInEmail = null;
+    public static String loggedInRole = null;
 
     /**
      * Completes the registration process for a new user by hashing their password
@@ -56,6 +60,30 @@ public class RegistrationManager {
             System.out.print(ex.getMessage());
         }
 
+        // get the lifespan of the country and then calculate survival rate
+        double countryExpectancy = 0.0;
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/read-expectancy.sh", countryISOCode);
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                countryExpectancy = Double.parseDouble(line);
+            }
+            process.waitFor();
+            int exitCode = process.exitValue();
+            if (exitCode == 0) {
+                System.out.println("Expectancy retrieved successfully");
+            } else {
+                System.out.println("Error while retrieving expectancy. Please try again later.");
+            }
+        } catch(Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        // Calculate survival Rate
+        lifespan = calculateSurvivalRate(countryExpectancy,dateOfBirth,isHIVPositive,diagnosisDate,onART,artStartDate);
+
+
         // Call the complete registration script
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("scripts/complete-registration.sh", email, hashedPassword, uuid, firstName, lastName, dateOfBirth, countryISOCode, String.valueOf(isHIVPositive), diagnosisDate, String.valueOf(onART), artStartDate, role, Double.toString(lifespan));
@@ -76,7 +104,47 @@ public class RegistrationManager {
             System.out.println(ex.getMessage());
         }
     }
+    /**
+     * *Calculates Survival Rate
+     */
+    private double calculateSurvivalRate(double countryLifespan, String dateOfBirth, boolean isHIVPositive, String diagnosisDate, boolean onART, String ARTStartDate){
+        double age, survivalRate;
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate birthDate = LocalDate.parse(dateOfBirth, formatter);
+
+        int birthYear = birthDate.getYear();
+        int currentYear = LocalDate.now().getYear();
+
+        // Calculate the age
+        age = currentYear - birthYear;
+        survivalRate = age;
+
+        if(!isHIVPositive){
+            survivalRate = countryLifespan - age;
+        } else if (!onART) {
+            LocalDate diagnoseDate = LocalDate.parse(diagnosisDate, formatter);
+            int diagnosisYear = diagnoseDate.getYear();
+
+            survivalRate = diagnosisYear + 5;
+        } else {
+            LocalDate diagnoseDate = LocalDate.parse(diagnosisDate, formatter);
+            int diagnosisYear = diagnoseDate.getYear();
+
+            LocalDate artStartDate = LocalDate.parse(ARTStartDate, formatter);
+            int artStartYear = artStartDate.getYear();
+
+            int noTherapyYears = artStartYear - diagnosisYear;
+
+            survivalRate = countryLifespan - age;
+            for (int i = 0; i < noTherapyYears; i++) {
+                survivalRate *= 0.9;
+            }
+        }
+        int roundedValue = (int) Math.ceil(survivalRate);
+        survivalRate = (double) roundedValue;
+        return survivalRate;
+    }
     /**
      * Logs in a user by hashing their password and invoking an external script with the login details.
      *
@@ -109,21 +177,23 @@ public class RegistrationManager {
             ProcessBuilder processBuilder = new ProcessBuilder("scripts/login.sh", email, hashedPassword);
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String User_Data;
-            while ((User_Data = reader.readLine()) != null) {
-                LoggedInUserData=User_Data;
+            String script_output;
+            while ((script_output = reader.readLine()) != null) {
+                String[] outputs = script_output.split(",");
+
+                loggedInEmail = outputs.length > 0 ? outputs[0].trim() : "";
+                loggedInRole = outputs.length > 1 ? outputs[1].trim() : "";
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println(LoggedInUserData);
     }
 
     /**
      * Logs out a user by clearing the email and role variables
      */
     public static void logout(){
-//        email = null;
-//        role = null;
+        loggedInRole = null;
+        loggedInEmail = null;
     }
 }
