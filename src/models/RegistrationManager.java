@@ -15,6 +15,7 @@ import java.io.*;
  */
 public class RegistrationManager {
     static String hashedPassword = "";
+    static String LoggedInUserData="";
 
     /**
      * Completes the registration process for a new user by hashing their password
@@ -108,13 +109,14 @@ public class RegistrationManager {
             ProcessBuilder processBuilder = new ProcessBuilder("scripts/login.sh", email, hashedPassword);
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String script_output;
-            while ((script_output = reader.readLine()) != null) {
-                System.out.println(script_output);
+            String User_Data;
+            while ((User_Data = reader.readLine()) != null) {
+                LoggedInUserData=User_Data;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        System.out.println(LoggedInUserData);
     }
 
     /**
