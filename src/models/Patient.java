@@ -7,7 +7,12 @@
 
 package models;
 
+import models.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Date;
+
+import static models.RegistrationManager.loggedInEmail;
 
 /**
  * The Patient class extends the User class, representing a patient in the system.
@@ -62,7 +67,24 @@ public class Patient extends User {
      */
     @Override
     public void viewProfile() {
-        // Patient-specific profile view
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/Patient_View_ProfileInfo.sh", loggedInEmail);
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            process.waitFor();
+            int exitCode = process.exitValue();
+            if (exitCode == 0) {
+                System.out.println("Success");
+            } else {
+                System.out.println("An error occurred during hashing.");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
