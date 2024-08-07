@@ -3,8 +3,6 @@ import models.*;
 import java.io.Console;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static models.RegistrationManager.loggedInEmail;
 import static models.RegistrationManager.loggedInRole;
@@ -143,7 +141,30 @@ public class Main {
                         patient.viewProfile();
                         break;
                     case 2:
-                        System.out.println("Update Profile");
+                        System.out.println("Fill in the fields you want to update only. Leave others empty");
+
+                        System.out.print("Enter firstname: ");
+                        String firstname = scanner.nextLine();
+
+                        System.out.print("Enter lastname: ");
+                        String lastname = scanner.nextLine();
+
+                        System.out.print("Enter Date of Birth: ");
+                        String DoB = scanner.nextLine();
+
+                        System.out.print("Enter HIV Status: ");
+                        String HIVStatus = scanner.nextLine();
+
+                        System.out.print("Enter Diagnosis Date: ");
+                        String DiagnosisDate = scanner.nextLine();
+
+                        System.out.print("Enter ART Status: ");
+                        String ARTStatus = scanner.nextLine();
+
+                        System.out.print("Enter ART Start Date: ");
+                        String ARTStart = scanner.nextLine();
+
+                        patient.updateProfile(firstname,lastname,DoB,HIVStatus,DiagnosisDate,ARTStatus,ARTStart);
                         break;
                     case 3:
                         regMgr.logout();
