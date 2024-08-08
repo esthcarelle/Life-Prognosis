@@ -67,6 +67,7 @@ public class Patient extends User {
      */
     @Override
     public void viewProfile() {
+
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("scripts/Patient_View_ProfileInfo.sh", loggedInEmail);
             Process process = processBuilder.start();
@@ -91,7 +92,24 @@ public class Patient extends User {
      * Updates the profile of the patient. This method is specific to patient users.
      */
     @Override
-    public void updateProfile() {
-        // Patient-specific profile update
+    public void updateProfile(String firstname, String lastname, String DoB, String HIVStatus, String DiagnosisDate, String ARTStatus, String ARTStart) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/Patient_Update_ProfileInfo.sh", loggedInEmail,firstname,lastname,DoB,HIVStatus,DiagnosisDate,ARTStatus,ARTStart);
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            process.waitFor();
+            int exitCode = process.exitValue();
+            if (exitCode == 0) {
+                System.out.println("Success");
+            } else {
+                System.out.println("An error occurred during hashing.");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

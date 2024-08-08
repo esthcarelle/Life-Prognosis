@@ -51,7 +51,7 @@ public class Admin extends User {
      * Updates the profile of the admin. This method is specific to admin users.
      */
     @Override
-    public void updateProfile() {
+    public void updateProfile(String firstname, String lastname, String DoB, String HIVStatus, String DiagnosisDate, String ARTStatus, String ARTStart) {
         // Admin-specific profile update
     }
 
