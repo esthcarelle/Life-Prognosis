@@ -72,7 +72,6 @@ else
 
 	new_string="$new_email,$new_password,$new_UUID,$new_firstname,$new_lastname,$new_DoB,$new_CountryCode,$new_HIVStatus,$new_DiagnosisDate,$new_ARTStatus,$new_ARTStart,$new_Role,$new_LifeSpan"
 	sed -i "/$search_email/c\\$new_string" "$input_file"
-	# echo "Profile updated successfully!!!"
-	echo "$input_lastname"
+	echo "Profile updated successfully!!!"
 fi
 
