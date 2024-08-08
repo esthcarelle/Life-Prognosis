@@ -20,7 +20,13 @@ public class RegistrationManager {
     // login variables
     public static String loggedInEmail = null;
     public static String loggedInRole = null;
+    public static String countryCode = null;
+    public static boolean hasHIV = false;
+    public static boolean onArt = false;
+    public static String patientDiagnosisDate = null;
+    public static String patientArtStartDate = null;
 
+    Patient p = new Patient("", "", "", "", null, false, null, false, null, "");
     /**
      * Completes the registration process for a new user by hashing their password
      * and invoking an external script with user details.
@@ -61,28 +67,28 @@ public class RegistrationManager {
         }
 
         // get the lifespan of the country and then calculate survival rate
-        double countryExpectancy = 0.0;
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder("scripts/read-expectancy.sh", countryISOCode);
-            Process process = processBuilder.start();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                countryExpectancy = Double.parseDouble(line);
-            }
-            process.waitFor();
-            int exitCode = process.exitValue();
-            if (exitCode == 0) {
-                System.out.println("Expectancy retrieved successfully");
-            } else {
-                System.out.println("Error while retrieving expectancy. Please try again later.");
-            }
-        } catch(Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        double countryExpectancy = p.getCountryExpectancy(countryISOCode);
+//        try {
+//            ProcessBuilder processBuilder = new ProcessBuilder("scripts/read-expectancy.sh", countryISOCode);
+//            Process process = processBuilder.start();
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                countryExpectancy = Double.parseDouble(line);
+//            }
+//            process.waitFor();
+//            int exitCode = process.exitValue();
+//            if (exitCode == 0) {
+//                System.out.println("Expectancy retrieved successfully");
+//            } else {
+//                System.out.println("Error while retrieving expectancy. Please try again later.");
+//            }
+//        } catch(Exception ex) {
+//            System.out.println(ex.getMessage());
+//        }
         // Calculate survival Rate
-        lifespan = calculateSurvivalRate(countryExpectancy,dateOfBirth,isHIVPositive,diagnosisDate,onART,artStartDate);
-
+        //lifespan = calculateSurvivalRate(countryExpectancy,dateOfBirth,isHIVPositive,diagnosisDate,onART,artStartDate);
+        lifespan = p.calculateSurvivalRate(countryExpectancy,dateOfBirth,isHIVPositive,diagnosisDate,onART,artStartDate);
 
         // Call the complete registration script
         try {
@@ -183,6 +189,13 @@ public class RegistrationManager {
 
                 loggedInEmail = outputs.length > 0 ? outputs[0].trim() : null;
                 loggedInRole = outputs.length > 1 ? outputs[1].trim() : null;
+                countryCode = outputs.length > 2 ? outputs[2].trim() : null;
+                if (outputs.length > 3 && outputs[3].trim().equals("Positive")) {
+                    hasHIV = true;
+                }
+                onArt = outputs.length > 4 && Boolean.parseBoolean(outputs[4].trim());
+                patientDiagnosisDate = outputs.length > 5 ? outputs[5].trim() : null;
+                patientArtStartDate = outputs.length > 6 ? outputs[6].trim() : null;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -195,5 +208,8 @@ public class RegistrationManager {
     public void logout(){
         loggedInRole = null;
         loggedInEmail = null;
+        countryCode = null;
+        hasHIV = false;
+        onArt = false;
     }
 }
