@@ -1,8 +1,9 @@
 import models.*;
 
 import java.io.Console;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static models.RegistrationManager.loggedInEmail;
 import static models.RegistrationManager.loggedInRole;
@@ -14,7 +15,8 @@ public class Main {
     public static void main(String[] args) {
 // Initialize the initial admin
         Admin admin = new Admin("AdminFirstName", "AdminLastName", "admin@example.com", "adminPassHash");
-        Patient patient = new Patient("", "", "", "", null, false, null, false, null, "");
+        //Patient patient = new Patient("", "", "", "", null, false, null, false, null, "");
+        Patient patient = new Patient("Isabelle", "Laurent", "isabelle@gmail.com", "dcdsfcew23", new Date(), true, new Date(), false, new Date(), "23");
         RegistrationManager regMgr = new RegistrationManager();
         InputValidator val = new InputValidator();
 
@@ -152,19 +154,43 @@ public class Main {
                         System.out.print("Enter Date of Birth: ");
                         String DoB = scanner.nextLine();
 
-                        System.out.print("Enter HIV Status: ");
-                        String HIVStatus = scanner.nextLine();
+//                        System.out.print("Enter HIV Status: ");
+//                        String HIVStatus = scanner.nextLine();
+                        System.out.print("Are you HIV positive (true/false): ");
+                        boolean hasHIV = Boolean.parseBoolean(scanner.nextLine());
 
-                        System.out.print("Enter Diagnosis Date: ");
-                        String DiagnosisDate = scanner.nextLine();
+                        String diagnosisDate = "";
+                        String artStartDate = "";
+                        boolean onART = false;
 
-                        System.out.print("Enter ART Status: ");
-                        String ARTStatus = scanner.nextLine();
+                        if (hasHIV) {
+                            System.out.print("Enter diagnosis date (dd-MM-yyyy): ");
+                            diagnosisDate = scanner.nextLine();
+                            //validate diagnosis date
+                            if(val.validateDate(diagnosisDate)){
+                                System.out.print("Are you on ART (true/false): ");
+                                onART = Boolean.parseBoolean(scanner.nextLine());
 
-                        System.out.print("Enter ART Start Date: ");
-                        String ARTStart = scanner.nextLine();
+                                if (onART) {
+                                    System.out.print("Enter ART start date (dd-MM-yyyy): ");
+                                    artStartDate = scanner.nextLine();
+                                }
+                            }
+                            else{
+                                System.out.println("Invalid date Format. PLease try again.");
+                            }
+                        }
 
-                        patient.updateProfile(firstname,lastname,DoB,HIVStatus,DiagnosisDate,ARTStatus,ARTStart);
+//                        System.out.print("Enter Diagnosis Date: ");
+//                        String DiagnosisDate = scanner.nextLine();
+//
+//                        System.out.print("Enter ART Status: ");
+//                        String ARTStatus = scanner.nextLine();
+//
+//                        System.out.print("Enter ART Start Date: ");
+//                        String ARTStart = scanner.nextLine();
+
+                        patient.updateProfile(firstname,lastname,DoB,hasHIV,diagnosisDate,onART,artStartDate);
                         break;
                     case 3:
                         regMgr.logout();
@@ -198,7 +224,11 @@ public class Main {
                         }
                         break;
                     case 2:
-                        admin.downloadFiles();
+//                        admin.downloadFiles();
+                        Map<String, User> users = new HashMap<>();
+                        users.put("key", patient);
+
+                        admin.downloadUserData(admin, "users.csv", users);
                         break;
                     case 3:
                         regMgr.logout();
