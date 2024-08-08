@@ -1,0 +1,7 @@
+Id,First Name,Last Name,Email,Date of Birth,Has HIV,Diagnosis Date,On ART Drugs,ART Start Date,Country of Residence
+226ca8ac-fdbe-489a-b4a6-bd4c12a36ae5,Test,Patient2,patient2@testmail.com,14-05-1977,false,,false,,RWA,
+b4083ce0-8021-4579-908e-8902e94ef30a,hh,ll,patient3@mail.com,12-02-1998,false,,false,,UGA,
+6e07e339-8511-4dfe-b2c6-d986105e78ee,tt,yy,test@mail.com,21-02-1995,false,,false,,UGA,
+d517ea3f-c714-4ba3-a3da-eb3effd1a3cf,Thomas,Mugagga,thomas@mugagga.com,22-03-1994,false,,false,,ETH,
+b3ea31a4-9289-4ccd-97f6-c8e12ecd1c84,,,admin@testmail.com,,false,,false,,,
+6d16ba35-b8a1-4bdc-a97e-6ddea3e7c4d1,Test,Patient5,patient5@testmail.com,14-06-2000,false,,false,12-03-2020,SEN,
