@@ -34,5 +34,3 @@ K
 src/users.csv,5/a/5a7e14a7eeb0d0604fa88568aa1e169e8fac3f1c
 B
 src/user-store.txt,d/b/dbe392156000ffbb29af8949b25a0c4d407effa0
-9
-	users.csv,a/c/acf9e7ffd0e7fdc6d0a5bba07664433b363811c4

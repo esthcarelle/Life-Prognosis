@@ -218,8 +218,7 @@ public class Main {
                         }
                         break;
                     case 2:
-                        admin.downloadFiles();
-                        admin.downloadUserData(admin, "users.csv");
+                        admin.downloadFiles(admin, "src/users.csv");
                         break;
                     case 3:
                         regMgr.logout();

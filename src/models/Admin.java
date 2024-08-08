@@ -8,8 +8,6 @@
 package models;
 
 import java.io.*;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * The Admin class extends the User class, representing an administrator in the system.
@@ -87,7 +85,7 @@ public class Admin extends User {
      * Initiates the download of files by executing an external script.
      * The script is expected to handle the actual file download logic and return the result.
      */
-    public void downloadFiles() {
+    public void downloadFiles(User requestingUser, String filePath) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("scripts/download-csv.sh", "createCSV");
             Process process = processBuilder.start();
@@ -97,12 +95,14 @@ public class Admin extends User {
                 System.out.println(line);
             }
             process.waitFor();
+
+            downloadUserData(requestingUser, filePath);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void downloadUserData(User requestingUser, String filePath) {
+    private void downloadUserData(User requestingUser, String filePath) {
         if (!(requestingUser instanceof Admin)) {
             throw new SecurityException("Access denied. Only admins can download user data.");
         }
@@ -113,7 +113,6 @@ public class Admin extends User {
                 File file = new File(
                         "/Users/esthercarrelle/IdeaProjects/Life Prognosis/src/user-store.txt");
 
-
                 // Creating an object of BufferedReader class
                 BufferedReader br
                         = new BufferedReader(new FileReader(file));
@@ -122,9 +121,10 @@ public class Admin extends User {
                 String st;
                 // Condition holds true till
                 // there is character in a string
+                writer.append("Id,First Name,Last Name,Password,Email,Date of Birth,Has HIV,Diagnosis Date,On ART Drugs,ART Start Date,Country of Residence,Role\n");
+
                 while ((st = br.readLine()) != null) {
 
-                    System.out.println(st);
                     String[] parts = st.split(",");
 
                     // Assuming that the fields match the order in the User class
@@ -141,18 +141,19 @@ public class Admin extends User {
                     String diagnosisDate = parts[10];
                     String role = parts[11];
 
-                    writer.append("Id,First Name,Last Name,Email,Date of Birth,Has HIV,Diagnosis Date,On ART Drugs,ART Start Date,Country of Residence\n");
                     writer.append(id).append(",").
                             append(firstName).append(",")
                             .append(lastName).append(",")
+                            .append(passwordHash).append(",")
                             .append(email).append(",")
                             .append(dob).append(",")
                             .append(isHIVPositive + "").append(",")
                             .append(diagnosisDate).append(",")
                             .append(isOnART + "").append(",")
                             .append(artStartDate).append(",")
-                            .append(country).append(",").append("\n");
+                            .append(country).append(",").append(role).append(",").append("\n");
                 }
+                System.out.println("User info successfully downloaded!");
             } catch (IOException | NumberFormatException e) {
                 throw new RuntimeException(e);
             }
@@ -163,5 +164,4 @@ public class Admin extends User {
             System.out.println(c.getMessage());
         }
     }
-
 }
