@@ -7,10 +7,8 @@
 
 package models;
 
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -23,9 +21,9 @@ public class Admin extends User {
     /**
      * Constructs a new Admin with the specified details.
      *
-     * @param firstName the first name of the admin
-     * @param lastName the last name of the admin
-     * @param email the email address of the admin
+     * @param firstName    the first name of the admin
+     * @param lastName     the last name of the admin
+     * @param email        the email address of the admin
      * @param passwordHash the hashed password of the admin
      */
     public Admin(String firstName, String lastName, String email, String passwordHash) {
@@ -103,29 +101,67 @@ public class Admin extends User {
             System.out.println(e.getMessage());
         }
     }
-    public void downloadUserData(User requestingUser, String filePath, Map<String,User> users) {
+
+    public void downloadUserData(User requestingUser, String filePath) {
         if (!(requestingUser instanceof Admin)) {
             throw new SecurityException("Access denied. Only admins can download user data.");
         }
 
         try (FileWriter writer = new FileWriter(filePath)) {
-            writer.append("First Name,Last Name,Email,Date of Birth,Has HIV,Diagnosis Date,On ART Drugs,ART Start Date,Country of Residence\n");
-            for (User user : users.values()) {
-                if (user instanceof Patient patient) {
-                    writer.append(patient.getFirstName()).append(",")
-                            .append(patient.getLastName()).append(",")
-                            .append(patient.getEmail()).append(",")
-                            .append(patient.getDateOfBirth().toString()).append(",")
-                            .append(patient.isHIVPositive()+"").append(",")
-                            .append(patient.getDiagnosisDate().toString()).append(",")
-                            .append(patient.isOnART()+"").append(",")
-                            .append(patient.getArtStartDate()+"").append(",")
-                            .append(patient.getCountryISOCode()).append(",").append("\n");
+            try {
+                // File path is passed as parameter
+                File file = new File(
+                        "/Users/esthercarrelle/IdeaProjects/Life Prognosis/src/user-store.txt");
+
+
+                // Creating an object of BufferedReader class
+                BufferedReader br
+                        = new BufferedReader(new FileReader(file));
+
+                // Declaring a string variable
+                String st;
+                // Condition holds true till
+                // there is character in a string
+                while ((st = br.readLine()) != null) {
+
+                    System.out.println(st);
+                    String[] parts = st.split(",");
+
+                    // Assuming that the fields match the order in the User class
+                    String email = parts[0];
+                    String passwordHash = parts[1];
+                    String id = parts[2];
+                    String firstName = parts[3];
+                    String lastName = parts[4];
+                    String dob = parts[5];
+                    String country = parts[6];
+                    boolean isHIVPositive = Boolean.parseBoolean(parts[7]);
+                    String artStartDate = parts[8];
+                    boolean isOnART = Boolean.parseBoolean(parts[9]);
+                    String diagnosisDate = parts[10];
+                    String role = parts[11];
+
+                    writer.append("Id,First Name,Last Name,Email,Date of Birth,Has HIV,Diagnosis Date,On ART Drugs,ART Start Date,Country of Residence\n");
+                    writer.append(id).append(",").
+                            append(firstName).append(",")
+                            .append(lastName).append(",")
+                            .append(email).append(",")
+                            .append(dob).append(",")
+                            .append(isHIVPositive + "").append(",")
+                            .append(diagnosisDate).append(",")
+                            .append(isOnART + "").append(",")
+                            .append(artStartDate).append(",")
+                            .append(country).append(",").append("\n");
                 }
+            } catch (IOException | NumberFormatException e) {
+                throw new RuntimeException(e);
             }
-            System.out.println("Users File Successfully downloaded!");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
+
+        } catch (Exception c) {
+            System.out.println(c.getMessage());
         }
     }
+
 }
