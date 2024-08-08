@@ -96,20 +96,27 @@ public class Patient extends User {
     public void updateProfile(String firstname, String lastname, String DoB, boolean HIVStatus, String DiagnosisDate, boolean ARTStatus, String ARTStart) {
         // get country expectancy and re-calculate
         double countryLifespan = getCountryExpectancy(countryCode);
+        DoB = (DoB == null || DoB.isEmpty())? patientDateOfBirth: DoB;
         if(HIVStatus){
             DiagnosisDate = (DiagnosisDate == null || DiagnosisDate.isEmpty())? patientDiagnosisDate:DiagnosisDate;
+        } else {
+            DiagnosisDate = patientDiagnosisDate;
         }
-        ARTStart = (ARTStart == null || ARTStart.isEmpty())? patientArtStartDate:ARTStart;
+        if(ARTStatus){
+            ARTStart = (ARTStart == null || ARTStart.isEmpty())? patientArtStartDate:ARTStart;
+        } else {
+            ARTStart = patientArtStartDate;
+        }
 
-        System.out.println(countryLifespan);
-        System.out.println(DoB);
-        System.out.println(hasHIV);
-        System.out.println(DiagnosisDate);
-        System.out.println(patientDiagnosisDate);
-        System.out.println(onArt);
-        System.out.println(ARTStart);
+//        System.out.println(countryLifespan);
+//        System.out.println(DoB);
+//        System.out.println(hasHIV);
+//        System.out.println(DiagnosisDate);
+//        System.out.println(patientDiagnosisDate);
+//        System.out.println(onArt);
+//        System.out.println(ARTStart);
 
-        double survivalrate = calculateSurvivalRate(countryLifespan, DoB,hasHIV,DiagnosisDate,onArt,ARTStart);
+        double survivalrate = calculateSurvivalRate(countryLifespan, DoB,HIVStatus,DiagnosisDate,ARTStatus,ARTStart);
 
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("scripts/Patient_Update_ProfileInfo.sh", loggedInEmail, firstname, lastname,DoB,String.valueOf(HIVStatus),DiagnosisDate,String.valueOf(ARTStatus),ARTStart, Double.toString(survivalrate));
@@ -163,6 +170,13 @@ public class Patient extends User {
     protected double calculateSurvivalRate(double countryLifespan, String dateOfBirth, boolean isHIVPositive, String diagnosisDate, boolean onART, String ARTStartDate){
         double age, survivalRate;
 
+        System.out.println("DOB: " + dateOfBirth);
+        System.out.println("Country Span: " + countryLifespan);
+        System.out.println("Positive: " + isHIVPositive);
+        System.out.println("Diag Date: " + diagnosisDate);
+        System.out.println("onArt: " + onART);
+        System.out.println("Art Date: " + ARTStartDate);
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate birthDate = LocalDate.parse(dateOfBirth, formatter);
 
@@ -179,7 +193,7 @@ public class Patient extends User {
             LocalDate diagnoseDate = LocalDate.parse(diagnosisDate, formatter);
             int diagnosisYear = diagnoseDate.getYear();
 
-            survivalRate = diagnosisYear + 5;
+            survivalRate = (diagnosisYear - birthYear) + 5;
         } else {
             LocalDate diagnoseDate = LocalDate.parse(diagnosisDate, formatter);
             int diagnosisYear = diagnoseDate.getYear();

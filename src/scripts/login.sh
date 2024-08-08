@@ -18,6 +18,6 @@ if [ -z "$user_data" ]; then
 elif [ "$input_password" != "$password" ]; then
 	echo "Invalid Password."
 else
-	echo "$email, $Role, $CountryCode, $hasHIV, $OnART, $DiagnosisDate, $ARTStart"
+	echo "$email, $Role, $CountryCode, $hasHIV, $OnART, $DiagnosisDate, $ARTStart, $DoB"
 fi
 fi

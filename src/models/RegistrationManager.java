@@ -25,6 +25,7 @@ public class RegistrationManager {
     public static boolean onArt = false;
     public static String patientDiagnosisDate = null;
     public static String patientArtStartDate = null;
+    public static  String patientDateOfBirth = null;
 
     Patient p = new Patient("", "", "", "", null, false, null, false, null, "");
     /**
@@ -196,6 +197,7 @@ public class RegistrationManager {
                 onArt = outputs.length > 4 && Boolean.parseBoolean(outputs[4].trim());
                 patientDiagnosisDate = outputs.length > 5 ? outputs[5].trim() : null;
                 patientArtStartDate = outputs.length > 6 ? outputs[6].trim() : null;
+                patientDateOfBirth = outputs.length > 7 ? outputs[7].trim() : null;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -211,5 +213,8 @@ public class RegistrationManager {
         countryCode = null;
         hasHIV = false;
         onArt = false;
+        patientDateOfBirth = null;
+        patientDiagnosisDate = null;
+        patientArtStartDate = null;
     }
 }
