@@ -84,5 +84,5 @@ public abstract class User {
     /**
      * Updates the profile of the user. This method must be implemented by subclasses.
      */
-    public abstract void updateProfile(String firstname, String lastname, String DoB, String HIVStatus, String DiagnosisDate, String ARTStatus, String ARTStart);
+    public abstract void updateProfile(String firstname, String lastname, String DoB, boolean HIVStatus, String DiagnosisDate, boolean ARTStatus, String ARTStart);
 }
