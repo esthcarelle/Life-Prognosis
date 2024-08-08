@@ -170,13 +170,6 @@ public class Patient extends User {
     protected double calculateSurvivalRate(double countryLifespan, String dateOfBirth, boolean isHIVPositive, String diagnosisDate, boolean onART, String ARTStartDate){
         double age, survivalRate;
 
-        System.out.println("DOB: " + dateOfBirth);
-        System.out.println("Country Span: " + countryLifespan);
-        System.out.println("Positive: " + isHIVPositive);
-        System.out.println("Diag Date: " + diagnosisDate);
-        System.out.println("onArt: " + onART);
-        System.out.println("Art Date: " + ARTStartDate);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate birthDate = LocalDate.parse(dateOfBirth, formatter);
 
