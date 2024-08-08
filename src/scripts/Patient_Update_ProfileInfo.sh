@@ -10,6 +10,7 @@ input_HIVStatus="$5"
 input_DiagnosisDate="$6"
 input_ARTStatus="$7"
 input_ARTStart="$8"
+new_LifeSpan="$9"
 
 
 user_data=$(grep "$search_email" user-store.txt)
@@ -68,10 +69,10 @@ else
   fi
 
 	new_Role="$Role"
-	new_LifeSpan="$LifeSpan"
 
 	new_string="$new_email,$new_password,$new_UUID,$new_firstname,$new_lastname,$new_DoB,$new_CountryCode,$new_HIVStatus,$new_DiagnosisDate,$new_ARTStatus,$new_ARTStart,$new_Role,$new_LifeSpan"
-	sed -i "/$search_email/c\\$new_string" "$input_file"	
-	echo "Profile updated successfully!!!"
+	sed -i "/$search_email/c\\$new_string" "$input_file"
+	# echo "Profile updated successfully!!!"
+	echo "$input_lastname"
 fi
 
