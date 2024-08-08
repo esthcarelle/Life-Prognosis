@@ -94,7 +94,7 @@ public class Patient extends User {
     @Override
     public void updateProfile(String firstname, String lastname, String DoB, String HIVStatus, String DiagnosisDate, String ARTStatus, String ARTStart) {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("scripts/Patient_Update_ProfileInfo.sh", loggedInEmail);
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/Patient_Update_ProfileInfo.sh", loggedInEmail,firstname,lastname,DoB,HIVStatus,DiagnosisDate,ARTStatus,ARTStart);
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
