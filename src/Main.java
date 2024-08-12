@@ -1,9 +1,6 @@
 import models.*;
-
 import java.io.Console;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static models.RegistrationManager.*;
 
@@ -55,7 +52,6 @@ public class Main {
                             String loginPassword = new String(console.readPassword("Enter your password: "));
                             regMgr.userLogin(loginEmail, loginPassword);
                         }
-
                         break;
                     case 2:
                         clearScreen();
@@ -90,39 +86,48 @@ public class Main {
                                         String dOB = scanner.nextLine();
                                         // validate date
                                         if (val.validateDate(dOB)) {
-                                            System.out.print("Enter country ISO code: ");
-                                            String countryIsoCode = scanner.nextLine();
+                                            if(val.compareDates("01-01-1904",dOB)){
+                                                System.out.print("Enter country ISO code: ");
+                                                String countryIsoCode = scanner.nextLine();
 
-                                            System.out.print("Are you HIV positive (true/false): ");
-                                            boolean hasHIV = Boolean.parseBoolean(scanner.nextLine());
+                                                System.out.print("Are you HIV positive (true/false): ");
+                                                boolean hasHIV = Boolean.parseBoolean(scanner.nextLine());
 
-                                            String diagnosisDate = "";
-                                            String artStartDate = "";
-                                            boolean onART = false;
+                                                String diagnosisDate = "";
+                                                String artStartDate = "";
+                                                boolean onART = false;
 
-                                            if (hasHIV) {
-                                                System.out.print("Enter diagnosis date (dd-MM-yyyy): ");
-                                                diagnosisDate = scanner.nextLine();
-                                                //validate diagnosis date
-                                                if (val.validateDate(diagnosisDate)) {
-                                                    System.out.print("Are you on ART (true/false): ");
-                                                    onART = Boolean.parseBoolean(scanner.nextLine());
+                                                if (hasHIV) {
+                                                    System.out.print("Enter diagnosis date (dd-MM-yyyy): ");
+                                                    diagnosisDate = scanner.nextLine();
+                                                    //validate diagnosis date
+                                                    if (val.validateDate(diagnosisDate)) {
+                                                        if(val.compareDates(dOB,diagnosisDate)){
+                                                            System.out.print("Are you on ART (true/false): ");
+                                                            onART = Boolean.parseBoolean(scanner.nextLine());
 
-                                                    if (onART) {
-                                                        System.out.print("Enter ART start date (dd-MM-yyyy): ");
-                                                        artStartDate = scanner.nextLine();
+                                                            if (onART) {
+                                                                System.out.print("Enter ART start date (dd-MM-yyyy): ");
+                                                                artStartDate = scanner.nextLine();
+                                                            }
+                                                        } else {
+                                                            System.out.println("Diagnosis date can not be before date of birth. PLease try again.");
+                                                        }
+                                                    } else {
+                                                        System.out.println("Invalid date Format. PLease try again.");
                                                     }
-                                                } else {
-                                                    System.out.println("Invalid date Format. PLease try again.");
                                                 }
+
+
+                                                String role = String.valueOf(UserRole.PATIENT);
+
+                                                double lifespan = 0.0;
+
+                                                regMgr.completeRegistration(email, pass1, uuid, firstName, lastName, dOB, countryIsoCode, hasHIV, diagnosisDate, onART, artStartDate, role, lifespan);
+
+                                            } else {
+                                                System.out.println("Date of birth is too far. PLease try again.");
                                             }
-
-                                            String role = String.valueOf(UserRole.PATIENT);
-
-                                            double lifespan = 0.0;
-
-                                            regMgr.completeRegistration(email, pass1, uuid, firstName, lastName, dOB, countryIsoCode, hasHIV, diagnosisDate, onART, artStartDate, role, lifespan);
-
                                         } else {
                                             System.out.println("Invalid date Format. PLease try again.");
                                         }
@@ -189,7 +194,7 @@ public class Main {
                             System.out.print("Enter lastname: ");
                             String lastname = scanner.nextLine();
 
-                            System.out.print("Enter Date of Birth: ");
+                            System.out.print("Enter Date of Birth (dd-MM-yyyy): ");
                             String DoB = scanner.nextLine();
 
                             System.out.print("Are you HIV positive (true/false): ");
@@ -204,12 +209,16 @@ public class Main {
                                 diagnosisDate = scanner.nextLine();
                                 //validate diagnosis date
                                 if (val.validateDate(diagnosisDate)) {
-                                    System.out.print("Are you on ART (true/false): ");
-                                    onART = Boolean.parseBoolean(scanner.nextLine());
+                                    if(val.compareDates(patientDateOfBirth,diagnosisDate)){
+                                        System.out.print("Are you on ART (true/false): ");
+                                        onART = Boolean.parseBoolean(scanner.nextLine());
 
-                                    if (onART) {
-                                        System.out.print("Enter ART start date (dd-MM-yyyy): ");
-                                        artStartDate = scanner.nextLine();
+                                        if (onART) {
+                                            System.out.print("Enter ART start date (dd-MM-yyyy): ");
+                                            artStartDate = scanner.nextLine();
+                                        }
+                                    } else {
+                                        System.out.println("Date of diagnosis can not be before date of birth. PLease try again.");
                                     }
                                 } else {
                                     System.out.println("Invalid date Format. PLease try again.");

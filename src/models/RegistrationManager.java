@@ -10,6 +10,7 @@ package models;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * The RegistrationManager class handles the registration and login processes for users.
