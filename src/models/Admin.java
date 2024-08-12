@@ -111,7 +111,7 @@ public class Admin extends User {
             try {
                 // File path is passed as parameter
                 File file = new File(
-                        "/Users/esthercarrelle/IdeaProjects/Life Prognosis/src/user-store.txt");
+                        "/mnt/c/AMANYA/CMU-Africa/Programming Bootcamp/tests/Life-Prognosis/src/user-store.txt");
 
                 // Creating an object of BufferedReader class
                 BufferedReader br
@@ -151,7 +151,7 @@ public class Admin extends User {
                             .append(diagnosisDate).append(",")
                             .append(isOnART + "").append(",")
                             .append(artStartDate).append(",")
-                            .append(country).append(",").append(role).append(",").append("\n");
+                            .append(country).append(",").append(role).append("\n");
                 }
                 System.out.println("User info successfully downloaded!");
             } catch (IOException | NumberFormatException e) {

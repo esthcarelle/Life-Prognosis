@@ -46,70 +46,74 @@ public class Main {
                         regMgr.userLogin(loginEmail, loginPassword);
                         break;
                     case 2:
-                        String pass1 = new String(console.readPassword("Enter your password: "));
-                        String pass2 = new String(console.readPassword("Re enter password: "));
+                        System.out.print("Enter your UUID: ");
+                        String uuid = scanner.nextLine();
 
-                        //check if the passwords match
-                        if (pass1.equals(pass2)) {
+                        if(regMgr.checkForUUID(uuid)){
                             System.out.print("Enter email: ");
                             String email = scanner.nextLine();
                             // validate email
                             if (val.validateEmail(email)) {
-                                System.out.print("Enter your UUID: ");
-                                String uuid = scanner.nextLine();
 
-                                System.out.print("Enter first name: ");
-                                String firstName = scanner.nextLine();
+                                String pass1 = new String(console.readPassword("Enter your password: "));
+                                String pass2 = new String(console.readPassword("Re enter password: "));
 
-                                System.out.print("Enter last name: ");
-                                String lastName = scanner.nextLine();
+                                //check if the passwords match
+                                if (pass1.equals(pass2)) {
+                                    System.out.print("Enter first name: ");
+                                    String firstName = scanner.nextLine();
 
-                                System.out.print("Enter date of birth (dd-MM-yyyy): ");
-                                String dOB = scanner.nextLine();
-                                // validate date
-                                if (val.validateDate(dOB)) {
-                                    System.out.print("Enter country ISO code: ");
-                                    String countryIsoCode = scanner.nextLine();
+                                    System.out.print("Enter last name: ");
+                                    String lastName = scanner.nextLine();
 
-                                    System.out.print("Are you HIV positive (true/false): ");
-                                    boolean hasHIV = Boolean.parseBoolean(scanner.nextLine());
+                                    System.out.print("Enter date of birth (dd-MM-yyyy): ");
+                                    String dOB = scanner.nextLine();
+                                    // validate date
+                                    if (val.validateDate(dOB)) {
+                                        System.out.print("Enter country ISO code: ");
+                                        String countryIsoCode = scanner.nextLine();
 
-                                    String diagnosisDate = "";
-                                    String artStartDate = "";
-                                    boolean onART = false;
+                                        System.out.print("Are you HIV positive (true/false): ");
+                                        boolean hasHIV = Boolean.parseBoolean(scanner.nextLine());
 
-                                    if (hasHIV) {
-                                        System.out.print("Enter diagnosis date (dd-MM-yyyy): ");
-                                        diagnosisDate = scanner.nextLine();
-                                        //validate diagnosis date
-                                        if (val.validateDate(diagnosisDate)) {
-                                            System.out.print("Are you on ART (true/false): ");
-                                            onART = Boolean.parseBoolean(scanner.nextLine());
+                                        String diagnosisDate = "";
+                                        String artStartDate = "";
+                                        boolean onART = false;
 
-                                            if (onART) {
-                                                System.out.print("Enter ART start date (dd-MM-yyyy): ");
-                                                artStartDate = scanner.nextLine();
+                                        if (hasHIV) {
+                                            System.out.print("Enter diagnosis date (dd-MM-yyyy): ");
+                                            diagnosisDate = scanner.nextLine();
+                                            //validate diagnosis date
+                                            if (val.validateDate(diagnosisDate)) {
+                                                System.out.print("Are you on ART (true/false): ");
+                                                onART = Boolean.parseBoolean(scanner.nextLine());
+
+                                                if (onART) {
+                                                    System.out.print("Enter ART start date (dd-MM-yyyy): ");
+                                                    artStartDate = scanner.nextLine();
+                                                }
+                                            } else {
+                                                System.out.println("Invalid date Format. PLease try again.");
                                             }
-                                        } else {
-                                            System.out.println("Invalid date Format. PLease try again.");
                                         }
+
+                                        String role = String.valueOf(UserRole.PATIENT);
+
+                                        double lifespan = 0.0;
+
+                                        regMgr.completeRegistration(email, pass1, uuid, firstName, lastName, dOB, countryIsoCode, hasHIV, diagnosisDate, onART, artStartDate, role, lifespan);
+
+                                    } else {
+                                        System.out.println("Invalid date Format. PLease try again.");
                                     }
-
-                                    String role = String.valueOf(UserRole.PATIENT);
-
-                                    double lifespan = 0.0;
-
-                                    regMgr.completeRegistration(email, pass1, uuid, firstName, lastName, dOB, countryIsoCode, hasHIV, diagnosisDate, onART, artStartDate, role, lifespan);
-
                                 } else {
-                                    System.out.println("Invalid date Format. PLease try again.");
+                                    System.out.println("\nPlease enter matching passwords.\n");
                                 }
                             } else {
                                 System.out.println("\nInvalid email format. Please try again.\n");
                             }
-
                         } else {
-                            System.out.println("\nPlease enter matching passwords.\n");
+                            System.out.println("UUID not found. Please contact the system administrator and try again.");
                         }
                         break;
                     case 3:
@@ -139,7 +143,7 @@ public class Main {
                         patient.viewProfile();
                         break;
                     case 2:
-                        System.out.println("Fill in the fields you want to update only. Leave others empty");
+                        System.out.println("Fill in the fields you want to update only. You MUST enter the HIV status and ART status. Leave others empty.");
 
                         System.out.print("Enter firstname: ");
                         String firstname = scanner.nextLine();
@@ -218,7 +222,7 @@ public class Main {
                         }
                         break;
                     case 2:
-                        admin.downloadFiles(admin, "src/users.csv");
+                        admin.downloadFiles(admin, "users.csv");
                         break;
                     case 3:
                         regMgr.logout();
