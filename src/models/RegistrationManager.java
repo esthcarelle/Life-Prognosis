@@ -217,4 +217,27 @@ public class RegistrationManager {
         patientDiagnosisDate = null;
         patientArtStartDate = null;
     }
+
+    /**
+     * Check if UUID exists to complete registration
+     */
+    public boolean checkForUUID(String uuid){
+        boolean found = false;
+        String result = "";
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/check-uuid.sh", uuid);
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result = line;
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        if(result.equals("Found")){
+            found = true;
+        }
+        return found;
+    }
 }
