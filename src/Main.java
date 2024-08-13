@@ -275,6 +275,7 @@ public class Main {
                         System.out.println("\t\tDOWNLOAD REPORTS | Life Prognosis Management Tool");
                         System.out.println("*****************************************************************************************");
                         admin.downloadFiles(admin, "users.csv");
+                        admin.downloadAnalytics(admin, "analytics.csv");
                         break;
                     case 3:
                         regMgr.logout();
