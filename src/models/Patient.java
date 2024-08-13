@@ -120,14 +120,6 @@ public class Patient extends User {
             ARTStart = patientArtStartDate;
         }
 
-//        System.out.println(countryLifespan);
-//        System.out.println(DoB);
-//        System.out.println(hasHIV);
-//        System.out.println(DiagnosisDate);
-//        System.out.println(patientDiagnosisDate);
-//        System.out.println(onArt);
-//        System.out.println(ARTStart);
-
         survivalrate = calculateSurvivalRate(countryLifespan, DoB, HIVStatus, DiagnosisDate, ARTStatus, ARTStart);
 
         try {
