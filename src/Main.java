@@ -12,7 +12,8 @@ public class Main {
 // Initialize the initial admin
         Admin admin = new Admin("AdminFirstName", "AdminLastName", "admin@example.com", "adminPassHash");
         //Patient patient = new Patient("", "", "", "", null, false, null, false, null, "");
-        Patient patient = new Patient("Isabelle", "Laurent", "isabelle@gmail.com", "dcdsfcew23", new Date(), true, new Date(), false, new Date(), "23");
+        Patient patient = new Patient("Isabelle", "Laurent", "isabelle@gmail.com", "dcdsfcew23", new Date("14/02/2020"), true, new Date("15/01/1994"), false, new Date("12/12/2022"), "23");
+
         RegistrationManager regMgr = new RegistrationManager();
         InputValidator val = new InputValidator();
 
@@ -162,7 +163,8 @@ public class Main {
                 System.out.println("\nWelcome. Please select a menu option to continue.");
                 System.out.println("1. View Profile");
                 System.out.println("2. Update Profile");
-                System.out.println("3. Logout");
+                System.out.println("3. Download iCalendar");
+                System.out.println("4. Logout");
 
                 System.out.print("Enter your choice: ");
                 int choice = scanner.nextInt();
@@ -228,7 +230,13 @@ public class Main {
                         }
                         break;
                     case 3:
+                        patient.createICalendarFile("/Users/esthercarrelle/IdeaProjects/Life Prognosis/src/iCalendar.ics");
+                        break;
+                    case 4:
                         regMgr.logout();
+                        break;
+                    default:
+                        System.out.println("Invalid Entry!");
                         break;
                 }
 
@@ -278,6 +286,9 @@ public class Main {
                         break;
                     case 3:
                         regMgr.logout();
+                        break;
+                        default:
+                        System.out.println("Invalid Entry!");
                         break;
                 }
 
