@@ -7,3 +7,4 @@ patient5@testmail.com,f07245df80ee034f9519eed5d761e5979380e417366cf1119c10328c6d
 patient6@testmail.com,f07245df80ee034f9519eed5d761e5979380e417366cf1119c10328c6dfe9016,090c1aef-d03e-46c0-a7f7-6b54778a49a2,Test,Patient6,12-09-1997,RWA,true,28-10-2012,false,,PATIENT,20.0
 patient7@testmail.com,f07245df80ee034f9519eed5d761e5979380e417366cf1119c10328c6dfe9016,7a96cbf8-e85d-4318-86fd-1cadb99e7939,Test,Patient7,21-05-1995,RWA,true,23-10-2010,false,,PATIENT,20.0
 mypatient@testmail.com,,457199c5-94a0-4d97-b1f4-4341d7298b23,,,,,,,,,"patient",
+patient8@testmail.com,,6bac917a-6adb-4d67-bcc5-d6692e5418b2,,,,,,,,,"patient",

@@ -10,6 +10,7 @@ package models;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * The RegistrationManager class handles the registration and login processes for users.
@@ -69,26 +70,8 @@ public class RegistrationManager {
 
         // get the lifespan of the country and then calculate survival rate
         double countryExpectancy = p.getCountryExpectancy(countryISOCode);
-//        try {
-//            ProcessBuilder processBuilder = new ProcessBuilder("scripts/read-expectancy.sh", countryISOCode);
-//            Process process = processBuilder.start();
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                countryExpectancy = Double.parseDouble(line);
-//            }
-//            process.waitFor();
-//            int exitCode = process.exitValue();
-//            if (exitCode == 0) {
-//                System.out.println("Expectancy retrieved successfully");
-//            } else {
-//                System.out.println("Error while retrieving expectancy. Please try again later.");
-//            }
-//        } catch(Exception ex) {
-//            System.out.println(ex.getMessage());
-//        }
+
         // Calculate survival Rate
-        //lifespan = calculateSurvivalRate(countryExpectancy,dateOfBirth,isHIVPositive,diagnosisDate,onART,artStartDate);
         lifespan = p.calculateSurvivalRate(countryExpectancy,dateOfBirth,isHIVPositive,diagnosisDate,onART,artStartDate);
 
         // Call the complete registration script
@@ -239,5 +222,25 @@ public class RegistrationManager {
             found = true;
         }
         return found;
+    }
+    public static void clearScreen() {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            }
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+    public static void displayLogo(){
+        System.out.println("\t\t██████╗ ██╗███████╗ ██████╗ ██╗  ██╗███████╗    ██╗  ██╗");
+        System.out.println("\t\t██╔══██╗██║██╔════╝██╔═══██╗██║ ██╔╝██╔════╝    ██║  ██║");
+        System.out.println("\t\t██████╔╝██║███████╗██║   ██║█████╔╝ █████╗      ███████║");
+        System.out.println("\t\t██╔══██╗██║╚════██║██║   ██║██╔═██╗ ██╔══╝      ╚════██║");
+        System.out.println("\t\t██████╔╝██║███████║╚██████╔╝██║  ██╗███████╗         ██║");
+        System.out.println("\t\t╚═════╝ ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝         ╚═╝");
+        System.out.println("                                                        ");
     }
 }

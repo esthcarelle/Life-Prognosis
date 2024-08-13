@@ -1,5 +1,7 @@
 package models;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,5 +19,15 @@ public class InputValidator {
         Pattern pattern = Pattern.compile(datePattern);
         Matcher matcher = pattern.matcher(date);
         return matcher.matches();
+    }
+    public boolean compareDates(String date1, String date2){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        // Convert strings to LocalDate
+        LocalDate newDate1 = LocalDate.parse(date1, formatter);
+        LocalDate newDate2 = LocalDate.parse(date2, formatter);
+
+        // Compare the dates
+        return newDate2.isAfter(newDate1);
     }
 }
