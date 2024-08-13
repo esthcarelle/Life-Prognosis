@@ -8,11 +8,22 @@
 package models;
 
 import models.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.CalendarOutputter;
+import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.model.*;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.parameter.Value;
+import net.fortuna.ical4j.model.property.*;
+import net.fortuna.ical4j.util.UidGenerator;
+
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.UUID;
 
 import static models.RegistrationManager.*;
 
@@ -28,19 +39,20 @@ public class Patient extends User {
     private boolean onART;
     private Date artStartDate;
     private String countryISOCode;
+    private double survivalrate;
 
     /**
      * Constructs a new Patient with the specified details.
      *
-     * @param firstName the first name of the patient
-     * @param lastName the last name of the patient
-     * @param email the email address of the patient
-     * @param passwordHash the hashed password of the patient
-     * @param dateOfBirth the date of birth of the patient
-     * @param isHIVPositive the HIV status of the patient
-     * @param diagnosisDate the date the patient was diagnosed with HIV
-     * @param onART the ART status of the patient
-     * @param artStartDate the date the patient started ART
+     * @param firstName      the first name of the patient
+     * @param lastName       the last name of the patient
+     * @param email          the email address of the patient
+     * @param passwordHash   the hashed password of the patient
+     * @param dateOfBirth    the date of birth of the patient
+     * @param isHIVPositive  the HIV status of the patient
+     * @param diagnosisDate  the date the patient was diagnosed with HIV
+     * @param onART          the ART status of the patient
+     * @param artStartDate   the date the patient started ART
      * @param countryISOCode the ISO code of the patient's country
      */
     public Patient(String firstName, String lastName, String email, String passwordHash, Date dateOfBirth,
@@ -96,14 +108,14 @@ public class Patient extends User {
     public void updateProfile(String firstname, String lastname, String DoB, boolean HIVStatus, String DiagnosisDate, boolean ARTStatus, String ARTStart) {
         // get country expectancy and re-calculate
         double countryLifespan = getCountryExpectancy(countryCode);
-        DoB = (DoB == null || DoB.isEmpty())? patientDateOfBirth: DoB;
-        if(HIVStatus){
-            DiagnosisDate = (DiagnosisDate == null || DiagnosisDate.isEmpty())? patientDiagnosisDate:DiagnosisDate;
+        DoB = (DoB == null || DoB.isEmpty()) ? patientDateOfBirth : DoB;
+        if (HIVStatus) {
+            DiagnosisDate = (DiagnosisDate == null || DiagnosisDate.isEmpty()) ? patientDiagnosisDate : DiagnosisDate;
         } else {
             DiagnosisDate = patientDiagnosisDate;
         }
-        if(ARTStatus){
-            ARTStart = (ARTStart == null || ARTStart.isEmpty())? patientArtStartDate:ARTStart;
+        if (ARTStatus) {
+            ARTStart = (ARTStart == null || ARTStart.isEmpty()) ? patientArtStartDate : ARTStart;
         } else {
             ARTStart = patientArtStartDate;
         }
@@ -116,10 +128,10 @@ public class Patient extends User {
 //        System.out.println(onArt);
 //        System.out.println(ARTStart);
 
-        double survivalrate = calculateSurvivalRate(countryLifespan, DoB,HIVStatus,DiagnosisDate,ARTStatus,ARTStart);
+        survivalrate = calculateSurvivalRate(countryLifespan, DoB, HIVStatus, DiagnosisDate, ARTStatus, ARTStart);
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("scripts/Patient_Update_ProfileInfo.sh", loggedInEmail, firstname, lastname,DoB,String.valueOf(HIVStatus),DiagnosisDate,String.valueOf(ARTStatus),ARTStart, Double.toString(survivalrate));
+            ProcessBuilder processBuilder = new ProcessBuilder("scripts/Patient_Update_ProfileInfo.sh", loggedInEmail, firstname, lastname, DoB, String.valueOf(HIVStatus), DiagnosisDate, String.valueOf(ARTStatus), ARTStart, Double.toString(survivalrate));
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
@@ -141,7 +153,7 @@ public class Patient extends User {
     /**
      * *Gets the country expectancy from the CSV
      */
-    protected double getCountryExpectancy(String countryISOCode){
+    protected double getCountryExpectancy(String countryISOCode) {
         double countryExpectancy = 0.0;
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("scripts/read-expectancy.sh", countryISOCode);
@@ -158,7 +170,7 @@ public class Patient extends User {
             } else {
                 System.out.println("Error while retrieving expectancy. Please try again later.");
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
         return countryExpectancy;
@@ -167,7 +179,7 @@ public class Patient extends User {
     /**
      * *Calculates Survival Rate
      */
-    protected double calculateSurvivalRate(double countryLifespan, String dateOfBirth, boolean isHIVPositive, String diagnosisDate, boolean onART, String ARTStartDate){
+    protected double calculateSurvivalRate(double countryLifespan, String dateOfBirth, boolean isHIVPositive, String diagnosisDate, boolean onART, String ARTStartDate) {
         double age, survivalRate;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -180,7 +192,7 @@ public class Patient extends User {
         age = currentYear - birthYear;
         survivalRate = age;
 
-        if(!isHIVPositive){
+        if (!isHIVPositive) {
             survivalRate = countryLifespan - age;
         } else if (!onART) {
             LocalDate diagnoseDate = LocalDate.parse(diagnosisDate, formatter);
@@ -206,6 +218,57 @@ public class Patient extends User {
         return survivalRate;
     }
 
+
+    public void createICalendarFile(String filePath) {
+        try {
+            int survivalRateInInt = 0;
+
+            if (survivalrate != 0.0)
+                survivalRateInInt = (int) survivalrate;
+            else
+                survivalRateInInt = 360000000;
+
+            // Create a new calendar
+            Calendar calendar = new Calendar();
+            calendar.add(new ProdId("-//Bisoke Group 4//iCal4j 1.0//EN"));
+            calendar.add(new ProdId(Version.VALUE_2_0));
+
+            // Set timezone
+            TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+            net.fortuna.ical4j.model.TimeZone timezone = registry.getTimeZone("Africa/Kigali");
+            java.util.Calendar cal = new GregorianCalendar(timezone);
+            // Set event details
+
+            cal.add(java.util.Calendar.YEAR, survivalRateInInt);
+
+            cal.set(java.util.Calendar.MONTH, java.util.Calendar.SEPTEMBER);
+            cal.set(java.util.Calendar.DAY_OF_MONTH, 15);
+            cal.set(java.util.Calendar.HOUR_OF_DAY, 10); // Set hour
+            cal.set(java.util.Calendar.MINUTE, 0); // Set minute
+
+            DateTime start = new DateTime(cal.getTime());
+            start.setTimeZone(timezone);
+
+            VEvent checkupEvent = new VEvent(start.toInstant(), new DateTime(start.getTime() + survivalRateInInt).toInstant(), "Death Day");
+            checkupEvent.add(new TzId(timezone.getID()));
+
+            // Set a unique identifier for the event
+            checkupEvent.add(new Uid(UUID.randomUUID().toString()));
+
+            // Add event to calendar
+            calendar.add(checkupEvent);
+
+            // Validate and save calendar to file
+            calendar.validate();
+            try (FileOutputStream out = new FileOutputStream(filePath)) {
+                CalendarOutputter output = new CalendarOutputter();
+                output.output(calendar, out);
+            }
+            System.out.println("Calendar successfully downloaded in iCalendar.ics");
+        } catch (Exception e) {
+            System.out.println("Error creating iCalendar file: " + e.getMessage());
+        }
+    }
 
     public Date getDateOfBirth() {
         return dateOfBirth;
