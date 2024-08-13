@@ -108,14 +108,6 @@ public class Patient extends User {
             ARTStart = patientArtStartDate;
         }
 
-//        System.out.println(countryLifespan);
-//        System.out.println(DoB);
-//        System.out.println(hasHIV);
-//        System.out.println(DiagnosisDate);
-//        System.out.println(patientDiagnosisDate);
-//        System.out.println(onArt);
-//        System.out.println(ARTStart);
-
         double survivalrate = calculateSurvivalRate(countryLifespan, DoB,HIVStatus,DiagnosisDate,ARTStatus,ARTStart);
 
         try {
@@ -167,7 +159,7 @@ public class Patient extends User {
     /**
      * *Calculates Survival Rate
      */
-    protected double calculateSurvivalRate(double countryLifespan, String dateOfBirth, boolean isHIVPositive, String diagnosisDate, boolean onART, String ARTStartDate){
+    public double calculateSurvivalRate(double countryLifespan, String dateOfBirth, boolean isHIVPositive, String diagnosisDate, boolean onART, String ARTStartDate){
         double age, survivalRate;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");

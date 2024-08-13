@@ -115,7 +115,7 @@ public class Admin extends User {
             try {
                 // File path is passed as parameter
                 File file = new File(
-                        "/mnt/c/AMANYA/CMU-Africa/Programming Bootcamp/tests/Life-Prognosis/src/user-store.txt");
+                        "/mnt/c/AMANYA/CMU-Africa/Programming Bootcamp/Life-Prognosis/src/user-store.txt");
 
                 // Creating an object of BufferedReader class
                 BufferedReader br
@@ -183,7 +183,7 @@ public class Admin extends User {
             writer.append("Country,Patients,Average,Median,20th,40th,60th,80th,90th\n");
 
             try {
-                File file = new File("/mnt/c/AMANYA/CMU-Africa/Programming Bootcamp/tests/Life-Prognosis/src/user-store.txt");
+                File file = new File("/mnt/c/AMANYA/CMU-Africa/Programming Bootcamp/Life-Prognosis/src/user-store.txt");
                 BufferedReader br = new BufferedReader(new FileReader(file));
                 String st;
 
@@ -194,12 +194,12 @@ public class Admin extends User {
                         try {
                             double expectancy = Double.parseDouble(parts[12]);
 
-                            // Add expectancy to the list for the appropriate country
+                            // Add expectancy to the list for country
                             countryExpectanciesMap
                                     .computeIfAbsent(country, k -> new ArrayList<>())
                                     .add(expectancy);
 
-                            // Increment patient count for the country
+                            // Increment patient count
                             countryPatientCountMap.merge(country, 1, Integer::sum);
                         } catch (NumberFormatException e) {
                             continue;
@@ -250,82 +250,6 @@ public class Admin extends User {
         }
     }
 
-    //    public void downloadAnalytics(User requestingUser, String filePath) {
-//        if (!(requestingUser instanceof Admin)) {
-//            throw new SecurityException("Access denied. Only admins can download user data.");
-//        }
-//
-//        ArrayList<Double> expectanciesList = new ArrayList<>();
-//
-//        try (FileWriter writer = new FileWriter(filePath)) {
-//            try {
-//                // File path is passed as parameter
-//                File file = new File(
-//                        "/mnt/c/AMANYA/CMU-Africa/Programming Bootcamp/tests/Life-Prognosis/src/user-store.txt");
-//
-//                // Creating an object of BufferedReader class
-//                BufferedReader br
-//                        = new BufferedReader(new FileReader(file));
-//
-//                // Declaring a string variable
-//                String st;
-//                // Condition holds true till
-//                // there is character in a string
-//                writer.append("Average,Median,20th,40th,60th,80th,90th\n");
-//
-//                while ((st = br.readLine()) != null) {
-//                    System.out.println(st);
-//
-//                    String[] parts = st.split(",");
-//
-//                    if (parts.length >= 13 && !parts[12].isEmpty()) {
-//                        try {
-//                            // Expectancy is in field 12
-//                            String rawExpectancy = parts[12];
-//                            double expectancy = Double.parseDouble(rawExpectancy);
-//
-//                            // Add to the expectancies list
-//                            expectanciesList.add(expectancy);
-//                        } catch (NumberFormatException e) {
-//                            continue;
-//                        }
-//                    } else {
-//                        continue;
-//                    }
-//                }
-//            } catch (Exception ex) {
-//                System.out.println(ex.getMessage());
-//            }
-//            // Convert ArrayList to double array
-//            double[] expectancies = new double[expectanciesList.size()];
-//            for (int i = 0; i < expectanciesList.size(); i++) {
-//                expectancies[i] = expectanciesList.get(i);
-//            }
-//
-//            //perform calculations
-//            double average = calculateAverage(expectancies);
-//            double median = calculateMedian(expectancies);
-//            double percentile20 = calculatePercentile(expectancies, 20);
-//            double percentile40 = calculatePercentile(expectancies, 40);
-//            double percentile60 = calculatePercentile(expectancies, 60);
-//            double percentile80 = calculatePercentile(expectancies, 80);
-//            double percentile90 = calculatePercentile(expectancies, 90);
-//
-//            writer.append(Double.toString(average)).append(",")
-//                    .append(Double.toString(median)).append(",")
-//                    .append(Double.toString(percentile20)).append(",")
-//                    .append(Double.toString(percentile40)).append(",")
-//                    .append(Double.toString(percentile60)).append(",")
-//                    .append(Double.toString(percentile80)).append(",")
-//                    .append(Double.toString(percentile90)).append(",")
-//                    .append("\n\n");
-//            writer.append(",\n");
-//            writer.append("The total number of records in the user store is: ").append(String.valueOf(expectancies.length));
-//
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
     private static double calculateAverage(double[] values) {
         double sum = 0;
         for (double value : values) {

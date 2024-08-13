@@ -95,47 +95,6 @@ public class RegistrationManager {
         }
     }
     /**
-     * *Calculates Survival Rate
-     */
-    private double calculateSurvivalRate(double countryLifespan, String dateOfBirth, boolean isHIVPositive, String diagnosisDate, boolean onART, String ARTStartDate){
-        double age, survivalRate;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate birthDate = LocalDate.parse(dateOfBirth, formatter);
-
-        int birthYear = birthDate.getYear();
-        int currentYear = LocalDate.now().getYear();
-
-        // Calculate the age
-        age = currentYear - birthYear;
-        survivalRate = age;
-
-        if(!isHIVPositive){
-            survivalRate = countryLifespan - age;
-        } else if (!onART) {
-            LocalDate diagnoseDate = LocalDate.parse(diagnosisDate, formatter);
-            int diagnosisYear = diagnoseDate.getYear();
-
-            survivalRate = diagnosisYear + 5;
-        } else {
-            LocalDate diagnoseDate = LocalDate.parse(diagnosisDate, formatter);
-            int diagnosisYear = diagnoseDate.getYear();
-
-            LocalDate artStartDate = LocalDate.parse(ARTStartDate, formatter);
-            int artStartYear = artStartDate.getYear();
-
-            int noTherapyYears = artStartYear - diagnosisYear;
-
-            survivalRate = countryLifespan - age;
-            for (int i = 0; i < noTherapyYears; i++) {
-                survivalRate *= 0.9;
-            }
-        }
-        int roundedValue = (int) Math.ceil(survivalRate);
-        survivalRate = (double) roundedValue;
-        return survivalRate;
-    }
-    /**
      * Logs in a user by hashing their password and invoking an external script with the login details.
      *
      * @param email the email address of the user
@@ -156,7 +115,7 @@ public class RegistrationManager {
             if (exitCode == 0) {
                 System.out.println("Loading...");
             } else {
-                System.out.println("Unable to complete registration at the moment. Please try again later or contact the system administrator.");
+                System.out.println("Unable to complete login at the moment. Please try again later or contact the system administrator.");
             }
         } catch (Exception ex) {
             System.out.print(ex.getMessage());
