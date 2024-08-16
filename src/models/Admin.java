@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static models.RegistrationManager.clearScreen;
+
 /**
  * The Admin class extends the User class, representing an administrator in the system.
  * Admins have additional privileges and can perform administrative tasks such as
@@ -70,6 +72,7 @@ public class Admin extends User {
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
+            clearScreen();
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
@@ -157,6 +160,7 @@ public class Admin extends User {
                             .append(artStartDate).append(",")
                             .append(country).append(",").append(role).append("\n");
                 }
+                clearScreen();
                 System.out.println("User info successfully downloaded!");
             } catch (IOException | NumberFormatException e) {
                 throw new RuntimeException(e);
@@ -180,6 +184,7 @@ public class Admin extends User {
         Map<String, Integer> countryPatientCountMap = new HashMap<>();
 
         try (FileWriter writer = new FileWriter(filePath)) {
+            writer.append("\"A Report Showing the Total Patients, Average, Median and Percentiles per Country\"\n");
             writer.append("Country,Patients,Average,Median,20th,40th,60th,80th,90th\n");
 
             try {

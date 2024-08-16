@@ -80,13 +80,14 @@ public class RegistrationManager {
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
+            clearScreen();
             while ((line = reader.readLine()) != null) {
                 System.out.println(line); // Print all output from the script
             }
             process.waitFor();
             int exitCode = process.exitValue();
             if (exitCode == 0) {
-                System.out.println("The complete registration script was executed successfully");
+
             } else {
                 System.out.println("An error occurred while saving your details. Please try again later.");
             }
@@ -112,6 +113,7 @@ public class RegistrationManager {
             }
             process.waitFor();
             int exitCode = process.exitValue();
+            clearScreen();
             if (exitCode == 0) {
                 System.out.println("Loading...");
             } else {
@@ -128,18 +130,28 @@ public class RegistrationManager {
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String script_output;
             while ((script_output = reader.readLine()) != null) {
-                String[] outputs = script_output.split(",");
+                // Check for error messages first
+                if (script_output.contains("Not Found")) {
+                    System.out.println("User not found.");
+                    // Handle user not found scenario
+                    break;
+                } else if (script_output.contains("Invalid Password")) {
+                    System.out.println("Invalid password.");
+                    // Handle invalid password scenario
+                    break;
+                } else {
+                    // Assuming a successful login, process the user details
+                    String[] outputs = script_output.split(",");
 
-                loggedInEmail = outputs.length > 0 ? outputs[0].trim() : null;
-                loggedInRole = outputs.length > 1 ? outputs[1].trim() : null;
-                countryCode = outputs.length > 2 ? outputs[2].trim() : null;
-                if (outputs.length > 3 && outputs[3].trim().equals("Positive")) {
-                    hasHIV = true;
+                    loggedInEmail = outputs.length > 0 ? outputs[0].trim() : null;
+                    loggedInRole = outputs.length > 1 ? outputs[1].trim() : null;
+                    countryCode = outputs.length > 2 ? outputs[2].trim() : null;
+                    hasHIV = outputs.length > 3 && outputs[3].trim().equalsIgnoreCase("true");
+                    onArt = outputs.length > 4 && Boolean.parseBoolean(outputs[4].trim());
+                    patientDiagnosisDate = outputs.length > 5 ? outputs[5].trim() : null;
+                    patientArtStartDate = outputs.length > 6 ? outputs[6].trim() : null;
+                    patientDateOfBirth = outputs.length > 7 ? outputs[7].trim() : null;
                 }
-                onArt = outputs.length > 4 && Boolean.parseBoolean(outputs[4].trim());
-                patientDiagnosisDate = outputs.length > 5 ? outputs[5].trim() : null;
-                patientArtStartDate = outputs.length > 6 ? outputs[6].trim() : null;
-                patientDateOfBirth = outputs.length > 7 ? outputs[7].trim() : null;
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -158,6 +170,7 @@ public class RegistrationManager {
         patientDateOfBirth = null;
         patientDiagnosisDate = null;
         patientArtStartDate = null;
+        clearScreen();
     }
 
     /**

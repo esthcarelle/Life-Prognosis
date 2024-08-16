@@ -8,19 +8,20 @@
 package models;
 
 import models.*;
-import net.fortuna.ical4j.data.CalendarBuilder;
-import net.fortuna.ical4j.data.CalendarOutputter;
-import net.fortuna.ical4j.data.ParserException;
-import net.fortuna.ical4j.model.*;
-import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.model.parameter.Value;
-import net.fortuna.ical4j.model.property.*;
-import net.fortuna.ical4j.util.UidGenerator;
+//import net.fortuna.ical4j.data.CalendarBuilder;
+//import net.fortuna.ical4j.data.CalendarOutputter;
+//import net.fortuna.ical4j.data.ParserException;
+//import net.fortuna.ical4j.model.*;
+//import net.fortuna.ical4j.model.component.VEvent;
+//import net.fortuna.ical4j.model.parameter.Value;
+//import net.fortuna.ical4j.model.property.*;
+//import net.fortuna.ical4j.util.UidGenerator;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.UUID;
@@ -127,13 +128,14 @@ public class Patient extends User {
             Process process = processBuilder.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
+            clearScreen();
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
             process.waitFor();
             int exitCode = process.exitValue();
             if (exitCode == 0) {
-                System.out.println("Success");
+
             } else {
                 System.out.println("An error occurred during hashing.");
             }
@@ -158,8 +160,9 @@ public class Patient extends User {
             process.waitFor();
             int exitCode = process.exitValue();
             if (exitCode == 0) {
-                System.out.println("Expectancy retrieved successfully");
+
             } else {
+                clearScreen();
                 System.out.println("Error while retrieving expectancy. Please try again later.");
             }
         } catch (Exception ex) {
@@ -211,56 +214,56 @@ public class Patient extends User {
     }
 
 
-    public void createICalendarFile(String filePath) {
-        try {
-            int survivalRateInInt = 0;
-
-            if (survivalrate != 0.0)
-                survivalRateInInt = (int) survivalrate;
-            else
-                survivalRateInInt = 360000000;
-
-            // Create a new calendar
-            Calendar calendar = new Calendar();
-            calendar.add(new ProdId("-//Bisoke Group 4//iCal4j 1.0//EN"));
-            calendar.add(new ProdId(Version.VALUE_2_0));
-
-            // Set timezone
-            TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
-            net.fortuna.ical4j.model.TimeZone timezone = registry.getTimeZone("Africa/Kigali");
-            java.util.Calendar cal = new GregorianCalendar(timezone);
-            // Set event details
-
-            cal.add(java.util.Calendar.YEAR, survivalRateInInt);
-
-            cal.set(java.util.Calendar.MONTH, java.util.Calendar.SEPTEMBER);
-            cal.set(java.util.Calendar.DAY_OF_MONTH, 15);
-            cal.set(java.util.Calendar.HOUR_OF_DAY, 10); // Set hour
-            cal.set(java.util.Calendar.MINUTE, 0); // Set minute
-
-            DateTime start = new DateTime(cal.getTime());
-            start.setTimeZone(timezone);
-
-            VEvent checkupEvent = new VEvent(start.toInstant(), new DateTime(start.getTime() + survivalRateInInt).toInstant(), "Death Day");
-            checkupEvent.add(new TzId(timezone.getID()));
-
-            // Set a unique identifier for the event
-            checkupEvent.add(new Uid(UUID.randomUUID().toString()));
-
-            // Add event to calendar
-            calendar.add(checkupEvent);
-
-            // Validate and save calendar to file
-            calendar.validate();
-            try (FileOutputStream out = new FileOutputStream(filePath)) {
-                CalendarOutputter output = new CalendarOutputter();
-                output.output(calendar, out);
-            }
-            System.out.println("Calendar successfully downloaded in iCalendar.ics");
-        } catch (Exception e) {
-            System.out.println("Error creating iCalendar file: " + e.getMessage());
-        }
-    }
+//    public void createICalendarFile(String filePath) {
+//        try {
+//            int survivalRateInInt = 0;
+//
+//            if (survivalrate != 0.0)
+//                survivalRateInInt = (int) survivalrate;
+//            else
+//                survivalRateInInt = 360000000;
+//
+//            // Create a new calendar
+//            Calendar calendar = new Calendar();
+//            calendar.add(new ProdId("-//Bisoke Group 4//iCal4j 1.0//EN"));
+//            calendar.add(new ProdId(Version.VALUE_2_0));
+//
+//            // Set timezone
+//            TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+//            net.fortuna.ical4j.model.TimeZone timezone = registry.getTimeZone("Africa/Kigali");
+//            java.util.Calendar cal = new GregorianCalendar(timezone);
+//            // Set event details
+//
+//            cal.add(java.util.Calendar.YEAR, survivalRateInInt);
+//
+//            cal.set(java.util.Calendar.MONTH, java.util.Calendar.SEPTEMBER);
+//            cal.set(java.util.Calendar.DAY_OF_MONTH, 15);
+//            cal.set(java.util.Calendar.HOUR_OF_DAY, 10); // Set hour
+//            cal.set(java.util.Calendar.MINUTE, 0); // Set minute
+//
+//            DateTime start = new DateTime(cal.getTime());
+//            start.setTimeZone(timezone);
+//
+//            VEvent checkupEvent = new VEvent(start.toInstant(), new DateTime(start.getTime() + survivalRateInInt).toInstant(), "Death Day");
+//            checkupEvent.add(new TzId(timezone.getID()));
+//
+//            // Set a unique identifier for the event
+//            checkupEvent.add(new Uid(UUID.randomUUID().toString()));
+//
+//            // Add event to calendar
+//            calendar.add(checkupEvent);
+//
+//            // Validate and save calendar to file
+//            calendar.validate();
+//            try (FileOutputStream out = new FileOutputStream(filePath)) {
+//                CalendarOutputter output = new CalendarOutputter();
+//                output.output(calendar, out);
+//            }
+//            System.out.println("Calendar successfully downloaded in iCalendar.ics");
+//        } catch (Exception e) {
+//            System.out.println("Error creating iCalendar file: " + e.getMessage());
+//        }
+//    }
 
     public Date getDateOfBirth() {
         return dateOfBirth;
