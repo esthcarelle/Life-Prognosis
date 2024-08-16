@@ -28,7 +28,7 @@ new_entry="$email,$password,$uuid,$firstname,$lastname,$dOB,$countryIsoCode,$has
 #  sed -i "s|^$email,.*|$new_entry|" "$file_path"
 if grep -q "^$email,.*,$uuid," "$USER_STORE"; then
   sed -i "s|^$email,.*,$uuid,.*|$new_entry|" "$USER_STORE"
-  echo "User details updated successfully."
+  echo "Profile completed successfully."
 else
   echo "User email and UUID do not exist."
 fi
