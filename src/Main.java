@@ -270,7 +270,7 @@ public class Main {
                             }
                             break;
                         case 3:
-                            //patient.createICalendarFile("/mnt/c/AMANYA/CMU-Africa/Programming Bootcamp/Life-Prognosis/src/iCalendar.ics");
+                            patient.createICalendarFile("/mnt/c/AMANYA/CMU-Africa/Programming Bootcamp/Life-Prognosis/src/iCalendar.ics");
                             break;
                         case 4:
                             regMgr.logout();
